@@ -3,8 +3,16 @@ import { Box, Heading, Flex, Button, SimpleGrid, Text, VStack, Input } from "@ch
 import { FiPlus, FiMail } from "react-icons/fi";
 import api from "../api/api";
 
+interface Team {
+  _id: string;
+  name: string;
+  description: string;
+  admin: { username: string; email: string };
+  members: any[];
+}
+
 const Teams = () => {
-  const [teams, setTeams] = useState([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [newTeam, setNewTeam] = useState({ name: "", description: "" });
@@ -61,12 +69,6 @@ const Teams = () => {
       alert(error.response?.data?.message || "Failed to add member");
     }
   };
-
-  const dummyTeams = [
-    { id: 1, name: "Frontend Engineering", lead: "Alex Johnson", members: 6 },
-    { id: 2, name: "Backend Services", lead: "Sarah Smith", members: 8 },
-    { id: 3, name: "Design UI/UX", lead: "Mike Chen", members: 4 },
-  ];
 
   return (
     <Box>

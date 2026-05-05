@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, SimpleGrid, Heading, Flex, Text } from "@chakra-ui/react";
 import { FiCheckCircle, FiClock, FiList } from "react-icons/fi";
 

@@ -3,8 +3,17 @@ import { Box, Heading, Flex, Button, SimpleGrid, Text, Input, VStack, chakra } f
 import { FiPlus } from "react-icons/fi";
 import api from "../api/api";
 
+interface Project {
+  _id: string;
+  name: string;
+  description: string;
+  status: string;
+  progress: number;
+  members: any[];
+}
+
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [newProject, setNewProject] = useState({ name: "", description: "", status: "Planning", progress: 0 });
@@ -39,13 +48,6 @@ const Projects = () => {
       console.error("Error creating project:", error);
     }
   };
-
-  const dummyProjects = [
-    { id: 1, name: "Website Redesign", status: "In Progress", progress: 65, members: 4 },
-    { id: 2, name: "Mobile App MVP", status: "Planning", progress: 15, members: 3 },
-    { id: 3, name: "Marketing Campaign", status: "Completed", progress: 100, members: 5 },
-    { id: 4, name: "Database Migration", status: "In Progress", progress: 40, members: 2 },
-  ];
 
   return (
     <Box>
