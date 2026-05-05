@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Heading, Flex, Button, SimpleGrid, Text, Input, VStack, chakra } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import axios from "axios";
+import api from "../api/api";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -15,10 +15,7 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/api/projects/all", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.get("/api/projects/all");
       if (res.data.success) {
         setProjects(res.data.projects);
       }
@@ -32,10 +29,7 @@ const Projects = () => {
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:3000/api/projects/create", newProject, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.post("/api/projects/create", newProject);
       if (res.data.success) {
         setProjects([res.data.project, ...projects]);
         setShowForm(false);

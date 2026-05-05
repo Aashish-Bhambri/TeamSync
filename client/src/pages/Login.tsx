@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Flex, Heading, Input, Text, Link as ChakraLink, VStack } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", formData);
+      const response = await api.post("/api/user/login", formData);
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
         navigate("/");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Flex, Heading, Input, Text, Link as ChakraLink, VStack } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/api";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Signup = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/user/register", formData);
+      const response = await api.post("/api/user/register", formData);
       if (response.data.success) {
         setSuccess(true);
         setTimeout(() => navigate("/login"), 2000);

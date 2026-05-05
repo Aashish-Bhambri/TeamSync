@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Heading, Flex, Button, SimpleGrid, Text, VStack, Input } from "@chakra-ui/react";
 import { FiPlus, FiMail } from "react-icons/fi";
-import axios from "axios";
+import api from "../api/api";
 
 const Teams = () => {
   const [teams, setTeams] = useState([]);
@@ -16,10 +16,7 @@ const Teams = () => {
 
   const fetchTeams = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/api/teams/all", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.get("/api/teams/all");
       if (res.data.success) {
         setTeams(res.data.teams);
       }
@@ -33,10 +30,7 @@ const Teams = () => {
   const handleCreateTeam = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:3000/api/teams/create", newTeam, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.post("/api/teams/create", newTeam);
       if (res.data.success) {
         setTeams([res.data.team, ...teams]);
         setShowForm(false);
@@ -49,18 +43,13 @@ const Teams = () => {
 
   const handleAddMember = async (teamId: string) => {
     try {
-      const token = localStorage.getItem("token");
       // First search for the user by email
-      const userRes = await axios.get(`http://localhost:3000/api/user/search?email=${memberEmail}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const userRes = await api.get(`/api/user/search?email=${memberEmail}`);
       
       if (userRes.data.success) {
         const userId = userRes.data.user._id;
         // Then add them to the team
-        const addRes = await axios.post("http://localhost:3000/api/teams/add-member", { teamId, userId }, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const addRes = await api.post("/api/teams/add-member", { teamId, userId });
         
         if (addRes.data.success) {
           fetchTeams(); // Refresh

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Heading, Flex, Button, SimpleGrid, Text, Badge, Input, chakra } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
-import axios from "axios";
+import api from "../api/api";
 
 interface Task {
   _id: string;
@@ -24,10 +24,7 @@ const Tasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/api/tasks/gp", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.get("/api/tasks/gp");
       if (res.data.success) {
         setTasks(res.data.tasks || []);
       }
@@ -41,10 +38,7 @@ const Tasks = () => {
   const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:3000/api/tasks/gp", newTask, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.post("/api/tasks/gp", newTask);
       if (res.data.success) {
         setTasks([res.data.task, ...tasks]);
         setShowForm(false);
